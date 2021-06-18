@@ -1,0 +1,56 @@
+( (version ( 0 10 3 )) (dependencies
+(( (file config/gen_services.ml) (deps
+ ((Sys) (Stringext) (String) (Scanf) (Printf) (List) (Hashtbl) (Array))) )
+( (file etc/uri_services.mli) (deps ((Uri))) )
+( (file etc/uri_services_full.mli) (deps ((Uri))) )
+( (file etc/uri_services_raw.ml) (deps ((Uri) (String) (Array))) )
+( (file fuzz/fuzz.ml) (deps ((Uri_legacy) (Uri) (Str) (Crowbar))) )
+( (file lib/uri.mli) (deps ((Format) (Angstrom))) )
+( (file lib_re/uri_legacy.mli) (deps ((Re) (Format))) )
+( (file lib_re/uri_re.mli) (deps ((Re))) )
+( (file lib_sexp/uri_sexp.mli) (deps
+((Uri) (Sexplib0__Sexp) (Sexplib0__) (Sexplib0))) )
+( (file lib_test/test_runner.ml) (deps
+((Uri_sexp) (Uri) (Sys) (Sexplib0__Sexp) (Sexplib0__) (Sexplib0) (Printf)
+(OUnit) (List) (Array) (Arg))) )
+( (file lib_test/test_runnerx.ml) (deps
+((Uri_services) (Uri) (Sys) (String) (Printf) (OUnit) (List) (Buffer) 
+(Array) (Arg) (Angstrom))) )
+( (file lib/uri.ml) (deps
+((Yojson) (Stringext) (String) (Printf) (List) (Lazy) (Format) (Char) 
+(Bytes) (Buffer) (Array) (Angstrom))) )
+( (file lib_re/uri_legacy.ml) (deps
+((Stringext) (String) (Re__Posix) (Re__Core) (Re__) (Re) (Printf) (List)
+(Lazy) (Format) (Char) (Bytes) (Buffer) (Array))) )
+( (file lib_re/uri_re.ml) (deps ((Re__Posix) (Re__) (Re))) )
+( (file lib_sexp/uri_sexp.ml) (deps
+((Uri) (Sexplib0__Sexp_conv) (Sexplib0__) (Sexplib0))) ))) (local
+(( (module (Fuzz)) (ml fuzz/fuzz.ml)  )
+( (module (Gen_services)) (ml config/gen_services.ml)  )
+( (module (Test_runner)) (ml lib_test/test_runner.ml)  )
+( (module (Test_runnerx)) (ml lib_test/test_runnerx.ml)  )
+( (module (Uri)) (ml lib/uri.ml) (mli lib/uri.mli) )
+( (module (Uri_legacy)) (ml lib_re/uri_legacy.ml) (mli lib_re/uri_legacy.mli)
+  ) ( (module (Uri_re)) (ml lib_re/uri_re.ml) (mli lib_re/uri_re.mli) )
+( (module (Uri_services)) (mli etc/uri_services.mli) )
+( (module (Uri_services_full)) (mli etc/uri_services_full.mli) )
+( (module (Uri_services_raw)) (ml etc/uri_services_raw.ml)  )
+( (module (Uri_sexp)) (ml lib_sexp/uri_sexp.ml) (mli lib_sexp/uri_sexp.mli) )))
+(lib
+(( (module (Angstrom)) (lib ( Users gar .opam 4.09.0 lib angstrom)) )
+( (module (Crowbar)) (lib ( Users gar .opam 4.09.0 lib crowbar)) )
+( (module (OUnit)) (lib ( Users gar .opam 4.09.0 lib ounit2)) )
+( (module (Re)) (lib ( Users gar .opam 4.09.0 lib re)) )
+( (module (Re__)) (lib ( Users gar .opam 4.09.0 lib re)) )
+( (module (Re__Core)) (lib ( Users gar .opam 4.09.0 lib re)) )
+( (module (Re__Posix)) (lib ( Users gar .opam 4.09.0 lib re)) )
+( (module (Sexplib0)) (lib ( Users gar .opam 4.09.0 lib sexplib0)) )
+( (module (Sexplib0__)) (lib ( Users gar .opam 4.09.0 lib sexplib0)) )
+( (module (Sexplib0__Sexp)) (lib ( Users gar .opam 4.09.0 lib sexplib0)) )
+( (module (Sexplib0__Sexp_conv)) (lib ( Users gar .opam 4.09.0 lib sexplib0))
+  ) ( (module (Str)) (lib ( Users gar .opam 4.09.0 lib ocaml)) )
+( (module (Stringext)) (lib ( Users gar .opam 4.09.0 lib stringext)) )
+( (module (Yojson)) (lib ( Users gar .opam 4.09.0 lib yojson)) )))  )
+module (Stringext)) (lib ( Users gar .opam 4.09.0 lib stringext)) )
+( (module (Yojson)) (lib ( Users gar .opam 4.09.0 lib yojson)) )))  )
+m 4.09.0 lib yojson)) )))  )

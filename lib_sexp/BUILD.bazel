@@ -1,0 +1,69 @@
+load(
+    "@obazl_rules_ocaml//ocaml:rules.bzl",
+    "ocaml_module",
+    "ocaml_signature",
+    "ppx_executable",
+    "ppx_module"
+)
+
+package(default_visibility = ["//visibility:public"])
+
+#############
+ocaml_module(
+    name   = "Uri_sexp",
+    struct = "uri_sexp.ml",
+    sig    = "Uri_sexp.cmi",
+    deps   = [
+        "@opam//lib/sexplib0",
+        "//lib:Uri",
+        # "@opam//lib/ppx_sexp_conv/runtime-lib", # FIXME: should come from deps_adjunct
+    ],
+    ppx = ":ppx"
+)
+
+#############
+ocaml_signature(
+    name  = "Uri_sexp.cmi",
+    src   = "uri_sexp.mli",
+    deps   = [
+        "@opam//lib/sexplib0",
+        "//lib:Uri",
+    ],
+    ppx = ":ppx"
+)
+
+###############
+ppx_executable(
+    name = "ppx",
+    # deps_adjunct_opam = [
+    #     "ppx_sexp_conv.runtime-lib",
+    # ],
+    main = ":ppxlib_driver",
+    opts = [],
+    deps = [
+        "@opam//lib/ppx_deriving",
+        "@opam//lib/ppx_sexp_conv",
+    ],
+    # deps_opam = [
+    #     "ppx_deriving",
+    #     "ppx_sexp_conv",
+    # ]
+)
+
+###########
+ppx_module(
+    name         = "ppxlib_driver",
+    struct       = ":ppxlib_driver.ml",
+    deps_opam = ["ppxlib"],
+    visibility = ["//visibility:public"],
+)
+
+########
+genrule(
+    name = "gendriver",
+    outs = ["ppxlib_driver.ml"],
+    cmd = "\n".join([
+        "echo \"(* GENERATED FILE - DO NOT EDIT *)\" > \"$@\"",
+        "echo \"let () = Ppxlib.Driver.standalone ()\" >> \"$@\"",
+    ]),
+)

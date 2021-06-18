@@ -1,0 +1,58 @@
+load(
+    "@obazl_rules_ocaml//ocaml:rules.bzl",
+    "ocaml_library",
+    "ocaml_module",
+    "ocaml_signature",
+    "ocaml_null"
+)
+
+package(default_visibility = ["//visibility:public"])
+
+#############
+ocaml_null(
+    name   = "src",
+)
+
+#############
+ocaml_module(
+    name   = "Uri_legacy",
+    struct = "uri_legacy.ml",
+    sig    = "Uri_legacy.cmi",
+    deps   = [
+        "@opam//lib/re/posix",
+        "@opam//lib/stringext",
+    ]
+)
+
+#############
+ocaml_signature(
+    name  = "Uri_legacy.cmi",
+    src   = "uri_legacy.mli",
+    deps   = [
+        "@opam//lib/re/posix",
+        "@opam//lib/stringext",
+    ]
+)
+
+#############
+ocaml_module(
+    name   = "Uri_re",
+    struct = "uri_re.ml",
+    sig    = "Uri_re.cmi",
+    deps   = [
+        "@opam//lib/re/posix",
+        "@opam//lib/stringext",
+        "@opam//lib/yojson",    # test: Error (warning 33): unused open Yojson.
+    ],
+    opts   = ["-w", "-33"],     # disable warning 33
+)
+
+#############
+ocaml_signature(
+    name  = "Uri_re.cmi",
+    src   = "uri_re.mli",
+    deps   = [
+        "@opam//lib/re/posix",
+        "@opam//lib/stringext",
+    ]
+)
