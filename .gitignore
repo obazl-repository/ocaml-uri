@@ -1,3 +1,6 @@
+user.bazelrc
+.moonlark.d
+
 *.install
 .*.swp
 .merlin

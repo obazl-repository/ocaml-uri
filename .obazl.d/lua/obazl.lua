@@ -78,7 +78,7 @@ function table_print (tt, indent, done)
       else
         table.insert(sb, string.format(
             "%s = \"%s\"\n", tostring (key), tostring(value)))
-       end
+      end
     end
     return table.concat(sb)
   else
