@@ -10,19 +10,7 @@ git_repository(
 )
 
 #############
-http_archive(
-    name = "bazel_skylib",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
-    ],
-    sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
-)
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-bazel_skylib_workspace()
-
-#############
-http_archive(
+http_archive(  ## needed to build re2c, which moonlark needs
     name = "rules_foreign_cc",
     url = "https://github.com/bazelbuild/rules_foreign_cc/archive/0.2.0.tar.gz",
     sha256 = "d54742ffbdc6924f222d2179f0e10e911c5c659c4ae74158e9fe827aad862ac6",
@@ -34,18 +22,31 @@ load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_depende
 ## Assumption: build tools (make, autoconf, etc.) are already installed, do not build them
 rules_foreign_cc_dependencies(register_built_tools=False)
 
-all_content = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
 
-http_archive(
-    name = "libre2c",
-    urls = [
-        "https://github.com/skvadrik/re2c/archive/refs/tags/2.1.1.zip"
-    ],
-    strip_prefix = "re2c-2.1.1",
-    sha256 = "080931d214943ea021fa9360a4694e824674e5c0f2e880153e8cb41982453aa6",
-    build_file_content = all_content,
-    workspace_file_content = "workspace( name = \"opam-re2c\" )"
-)
+# #############
+# http_archive(
+#     name = "bazel_skylib",
+#     urls = [
+#         "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
+#         "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
+#     ],
+#     sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
+# )
+# load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+# bazel_skylib_workspace()
+
+# all_content = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
+
+# http_archive(
+#     name = "libre2c",
+#     urls = [
+#         "https://github.com/skvadrik/re2c/archive/refs/tags/2.1.1.zip"
+#     ],
+#     strip_prefix = "re2c-2.1.1",
+#     sha256 = "080931d214943ea021fa9360a4694e824674e5c0f2e880153e8cb41982453aa6",
+#     build_file_content = all_content,
+#     workspace_file_content = "workspace( name = \"opam-re2c\" )"
+# )
 
 ### end of moonlark resources
 
