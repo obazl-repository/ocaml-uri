@@ -1,6 +1,6 @@
-load(
-    "@obazl_rules_ocaml//ocaml:rules.bzl",
-    "ocaml_library",
+
+
+load("@obazl_rules_ocaml//ocaml:rules.bzl","ocaml_library",
     "ocaml_module",
     "ocaml_signature",
     "ocaml_null"
@@ -17,10 +17,12 @@ ocaml_module(
         "@opam//lib/angstrom",
         "@opam//lib/stringext",
         "@opam//lib/yojson",
-    ]
+    ],
+    # opts = ["-Ix/y","-Ip","-Iq","-Ix/z","-Ia","-Ib","-Ifoo/bar"]
 )
 
 #############
+
 ocaml_signature(
     name  = "Uri.cmi",
     src   = "uri.mli",

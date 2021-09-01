@@ -16,7 +16,7 @@ ocaml_module(
     deps   = [
         "@opam//lib/sexplib0",
         "//lib:Uri",
-        # "@opam//lib/ppx_sexp_conv/runtime-lib", # FIXME: should come from deps_adjunct
+        ## "@opam//lib/ppx_sexp_conv/runtime-lib", # comes from deps_adjunct
     ],
     ppx = ":ppx"
 )
@@ -35,11 +35,10 @@ ocaml_signature(
 ###############
 ppx_executable(
     name = "ppx",
-    # deps_adjunct_opam = [
-    #     "ppx_sexp_conv.runtime-lib",
-    # ],
+    # deps_adjunct_opam = ["ppx_sexp_conv.runtime-lib"],
+    deps_adjunct = ["@opam//lib/ppx_sexp_conv/runtime-lib"],
     main = ":ppxlib_driver",
-    opts = [],
+    opts = ["-verbose"],
     deps = [
         "@opam//lib/ppx_deriving",
         "@opam//lib/ppx_sexp_conv",
@@ -54,7 +53,8 @@ ppx_executable(
 ppx_module(
     name         = "ppxlib_driver",
     struct       = ":ppxlib_driver.ml",
-    deps_opam = ["ppxlib"],
+    deps         = ["@opam//lib/ppxlib"],
+    # deps_opam = ["ppxlib"],
     visibility = ["//visibility:public"],
 )
 

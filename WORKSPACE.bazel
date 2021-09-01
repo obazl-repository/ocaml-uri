@@ -4,23 +4,19 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
-    name = "moonlark",
-    remote = "https://github.com/obazl/moonlark",
+    name = "sunlark",
+    remote = "https://github.com/obazl/sunlark",
     branch = "dev",
 )
-
-#############
-http_archive(  ## needed to build re2c, which moonlark needs
-    name = "rules_foreign_cc",
-    sha256 = "e14a159c452a68a97a7c59fa458033cc91edb8224516295b047a95555140af5f",
-    strip_prefix = "rules_foreign_cc-0.4.0",
-    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/0.4.0.tar.gz",
-)
+load("@sunlark//:WORKSPACE.bzl", "cc_fetch_repos")
+## cc_fetch_repos() fetches rules_foreign_cc, needed by sealark
+cc_fetch_repos()
 
 load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
 
-## Assumption: build tools (make, autoconf, etc.) are already installed, do not build them
-rules_foreign_cc_dependencies(register_built_tools=False)
+rules_foreign_cc_dependencies(
+    # register_built_tools=False
+)
 
 
 # #############
@@ -37,53 +33,58 @@ rules_foreign_cc_dependencies(register_built_tools=False)
 
 # all_content = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
 
-# http_archive(
-#     name = "libre2c",
-#     urls = [
-#         "https://github.com/skvadrik/re2c/archive/refs/tags/2.1.1.zip"
-#     ],
-#     strip_prefix = "re2c-2.1.1",
-#     sha256 = "080931d214943ea021fa9360a4694e824674e5c0f2e880153e8cb41982453aa6",
-#     build_file_content = all_content,
-#     workspace_file_content = "workspace( name = \"opam-re2c\" )"
-# )
-
-### end of moonlark resources
-
 # ######################################
 # ###############  OCaml ###############
-# http_archive(
-#     name = "bazel_skylib",
-#     urls = [
-#         "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
-#         "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
-#     ],
-#     sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
-# )
+git_repository(
+    name = "obazl_tools_obazl",
+    remote = "https://github.com/obazl/tools_obazl",
+    branch = "dev",
+)
 
-# load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-# bazel_skylib_workspace()
+git_repository(
+    name = "obazl_tools_opam",
+    remote = "https://github.com/obazl/rules_opam",
+    branch = "nocamlfind",
+)
 
-# git_repository(
-#     name = "tools_obazl",
-#     remote = "https://github.com/obazl/tools_obazl",
-#     branch = "dev",
-# )
-# git_repository(
-#     name = "obazl_rules_ocaml",
-#     remote = "https://github.com/obazl/rules_ocaml",
-#     branch = "dev",
-# )
-# load("@obazl_rules_ocaml//ocaml:bootstrap.bzl",
-#      "ocaml_configure",
-#      "ocaml_repository",
-#      "opam_configuration")
+git_repository(
+    name = "obazl_rules_ocaml",
+    remote = "https://github.com/obazl/rules_ocaml",
+    branch = "nocamlfind",
+)
 
-# # load("@obazl_rules_ocaml//ocaml:rules.bzl",
+load("@obazl_tools_opam//opam:bootstrap.bzl",
+     # opam_configure = "configure",
+     opam_install = "install")
+# load("//:WORKSPACE.bzl", "opam")
+# opam_configure(opam = opam)
 
-# # load("//:WORKSPACE.bzl", "opam")
-# ocaml_configure(
-#     ##FIXME: version for coq
+opam_install()
+
+load("@obazl_rules_ocaml//ocaml:bootstrap.bzl",
+     "ocaml_configure",
+     "ocaml_repository")
+     # "opam_configuration")
+
+# load("@obazl_rules_ocaml//ocaml:rules.bzl",
+
+ocaml_configure(
+    ##FIXME: version for coq
+)
+
+# opam_configuration(
+#     name = "opam",
+#     switch = "4.09.0",
+#     # packages = [
+#     #     "zarith",
+#     #     # "sexplib"
+#     # ],
+#     # build_files = {
+#     #     "@//bzl/opam/sexplib:BUILD.bazel": "sexplib",
+#     #     "@//bzl/opam/biniou:BUILD.bazel": "biniou"
+#     # },
+#     download = False,
+#     hermetic = False
 # )
 
 # # obazl_configure()
@@ -100,8 +101,8 @@ rules_foreign_cc_dependencies(register_built_tools=False)
 # #     strip_prefix = "rules_foreign_cc-0.2.0",
 # # )
 
-# load("@tools_obazl//:WORKSPACE.bzl", "cc_fetch_repos")
-# cc_fetch_repos()
+load("@obazl_tools_obazl//:WORKSPACE.bzl", obazl_fetch_repos="cc_fetch_repos")
+obazl_fetch_repos()
 
 # # must come after cc_fetch_repos
 # load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
@@ -169,20 +170,5 @@ rules_foreign_cc_dependencies(register_built_tools=False)
 #     url  = "https://github.com/ocamllabs/ocaml-ctypes/archive/15c225ea4f3efd1936fb045494a6b1803f42f594.tar.gz",
 #     strip_prefix = "ocaml-ctypes-15c225ea4f3efd1936fb045494a6b1803f42f594",
 #     sha256 = "1bdc604275994690d986403330119099fb65611c3c3fb1519eec0aa36ae6f44b"
-# )
-
-# opam_configuration(
-#     name = "opam",
-#     switch = "4.09.0",
-#     # packages = [
-#     #     "zarith",
-#     #     # "sexplib"
-#     # ],
-#     # build_files = {
-#     #     "@//bzl/opam/sexplib:BUILD.bazel": "sexplib",
-#     #     "@//bzl/opam/biniou:BUILD.bazel": "biniou"
-#     # },
-#     download = False,
-#     hermetic = False
 # )
 

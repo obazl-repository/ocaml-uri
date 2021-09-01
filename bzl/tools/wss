@@ -20,5 +20,7 @@ then
     LAST=
 fi
 
-ls --color $ARGS `bazel info output_base`/external/$LAST
+## --color for GNU ls, -G for bsd
+
+ls -G $ARGS `bazel info output_base`/external/$LAST
 echo OUTPUT_BASE: `bazel info output_base`/external
