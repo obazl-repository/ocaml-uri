@@ -1,9 +1,8 @@
 load(
-    "@obazl_rules_ocaml//ocaml:rules.bzl",
+    "@rules_ocaml//build:rules.bzl",
     "ocaml_module",
     "ocaml_signature",
     "ppx_executable",
-    "ppx_module"
 )
 
 package(default_visibility = ["//visibility:public"])
@@ -12,49 +11,41 @@ package(default_visibility = ["//visibility:public"])
 ocaml_module(
     name   = "Uri_sexp",
     struct = "uri_sexp.ml",
-    sig    = "Uri_sexp.cmi",
+    sig    = ":Uri_sexp_cmi",
     deps   = [
-        "@opam//lib/sexplib0",
+        "@sexplib0//:sexplib0",
         "//lib:Uri",
-        ## "@opam//lib/ppx_sexp_conv/runtime-lib", # comes from deps_adjunct
     ],
-    ppx = ":ppx"
+    ppx = ":ppx.exe"
 )
 
 #############
 ocaml_signature(
-    name  = "Uri_sexp.cmi",
+    name  = "Uri_sexp_cmi",
     src   = "uri_sexp.mli",
     deps   = [
-        "@opam//lib/sexplib0",
+        "@sexplib0//:sexplib0",
         "//lib:Uri",
     ],
-    ppx = ":ppx"
+    ppx = ":ppx.exe"
 )
 
 ###############
 ppx_executable(
-    name = "ppx",
-    # deps_adjunct_opam = ["ppx_sexp_conv.runtime-lib"],
-    deps_adjunct = ["@opam//lib/ppx_sexp_conv/runtime-lib"],
+    name = "ppx.exe",
+    ppx_codeps = ["@ppx_sexp_conv//runtime-lib"],
     main = ":ppxlib_driver",
-    opts = ["-verbose"],
     deps = [
-        "@opam//lib/ppx_deriving",
-        "@opam//lib/ppx_sexp_conv",
+        "@ppx_deriving//:ppx_deriving",
+        "@ppx_sexp_conv//:ppx_sexp_conv",
     ],
-    # deps_opam = [
-    #     "ppx_deriving",
-    #     "ppx_sexp_conv",
-    # ]
 )
 
 ###########
-ppx_module(
+ocaml_module(
     name         = "ppxlib_driver",
     struct       = ":ppxlib_driver.ml",
-    deps         = ["@opam//lib/ppxlib"],
-    # deps_opam = ["ppxlib"],
+    deps         = ["@ppxlib//:ppxlib"],
     visibility = ["//visibility:public"],
 )
 

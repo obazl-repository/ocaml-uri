@@ -1,0 +1,50 @@
+load("@rules_ocaml//build:rules.bzl","ocaml_library",
+    "ocaml_module",
+    "ocaml_signature",
+    "ocaml_null"
+)
+
+genrule(
+    name  = "gen_uri_services_ml",
+    srcs  = ["services.short", "uri_services_raw.ml"],
+    outs  = ["uri_services.ml"],
+    tools = ["//config:gen_services.exe"],
+    cmd = " ".join([
+        "$(location //config:gen_services.exe) ",
+        "$(location :services.short) ",
+        "$(location :uri_services_raw.ml) ",
+        "> $@;",
+        "cat $(location :uri_services_raw.ml) >> $@"
+    ])
+)
+
+ocaml_module(
+    name   = "Uri_services",
+    struct = "uri_services.ml",  ## generated above
+    sig    = "uri_services.mli",
+    deps   = ["//lib:Uri"],
+    visibility = ["//visibility:public"]
+)
+
+################
+genrule(
+    name  = "gen_uri_services_full_ml",
+    srcs  = ["services.full", "uri_services_raw.ml"],
+    outs  = ["uri_services_full.ml"],
+    tools = ["//config:gen_services.exe"],
+    cmd = " ".join([
+        "$(location //config:gen_services.exe) ",
+        "$(location :services.full) ",
+        "$(location :uri_services_raw.ml) ",
+        "> $@;",
+        "cat $(location :uri_services_raw.ml) >> $@"
+    ])
+)
+
+ocaml_module(
+    name   = "Uri_services_full",
+    struct = "uri_services_full.ml",  ## generated above
+    sig    = "uri_services_full.mli",
+    deps   = ["//lib:Uri"],
+    visibility = ["//visibility:public"]
+)

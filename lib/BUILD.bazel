@@ -1,35 +1,30 @@
 
 
-load("@obazl_rules_ocaml//ocaml:rules.bzl","ocaml_library",
+load("@rules_ocaml//build:rules.bzl","ocaml_library",
     "ocaml_module",
     "ocaml_signature",
     "ocaml_null"
 )
 
-package(default_visibility = ["//visibility:public"])
-
 #############
 ocaml_module(
     name   = "Uri",
     struct = "uri.ml",
-    sig    = "Uri.cmi",
+    sig    = ":Uri_cmi",
     deps   = [
-        "@opam//lib/angstrom",
-        "@opam//lib/stringext",
-        "@opam//lib/yojson",
+        "@angstrom//:angstrom",
+        "@stringext//:stringext",
     ],
-    # opts = ["-Ix/y","-Ip","-Iq","-Ix/z","-Ia","-Ib","-Ifoo/bar"]
+    visibility = ["//visibility:public"]
 )
 
 #############
 
 ocaml_signature(
-    name  = "Uri.cmi",
+    name  = "Uri_cmi",
     src   = "uri.mli",
     deps   = [
-        # "@opam//lib/threads/posix",
-        "@opam//lib/angstrom",
-        "@opam//lib/stringext",
-        "@opam//lib/yojson",
+        "@angstrom//:angstrom",
+        "@stringext//:stringext",
     ]
 )

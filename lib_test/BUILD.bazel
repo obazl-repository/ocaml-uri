@@ -1,0 +1,44 @@
+load(
+    "@rules_ocaml//build:rules.bzl",
+    "ocaml_module",
+    "ocaml_test",
+)
+
+test_suite(
+    name = "lib_test",
+    tests = [":test_runner", ":test_sexp"]
+)
+
+###########
+ocaml_test(
+    name = "test_runner",
+    main = "Test_runner"
+)
+
+ocaml_module(
+    name   = "Test_runner",
+    struct = "test_runner.ml",
+    deps = [
+        "//lib:Uri",
+        "//etc:Uri_services",
+        "@oUnit//:oUnit"
+    ],
+)
+
+###########
+ocaml_test(
+    name = "test_sexp",
+    main = "Test_runner_sexp"
+)
+
+ocaml_module(
+    name   = "Test_runner_sexp",
+    struct = "test_runner_sexp.ml",
+    deps = [
+        "//lib:Uri",
+        "//lib_sexp:Uri_sexp",
+        "//etc:Uri_services",
+        "@oUnit//:oUnit"
+    ],
+)
+

@@ -1,5 +1,5 @@
 load(
-    "@obazl_rules_ocaml//ocaml:rules.bzl",
+    "@rules_ocaml//build:rules.bzl",
     "ocaml_library",
     "ocaml_module",
     "ocaml_signature",
@@ -8,29 +8,29 @@ load(
 
 package(default_visibility = ["//visibility:public"])
 
-#############
-ocaml_null(
-    name   = "src",
-)
+# #############
+# ocaml_null(
+#     name   = "src",
+# )
 
 #############
 ocaml_module(
     name   = "Uri_legacy",
     struct = "uri_legacy.ml",
-    sig    = "Uri_legacy.cmi",
+    sig    = ":Uri_legacy_cmi",
     deps   = [
-        "@opam//lib/re/posix",
-        "@opam//lib/stringext",
+        "@re//posix",
+        "@stringext//:stringext",
     ]
 )
 
 #############
 ocaml_signature(
-    name  = "Uri_legacy.cmi",
+    name  = "Uri_legacy_cmi",
     src   = "uri_legacy.mli",
     deps   = [
-        "@opam//lib/re/posix",
-        "@opam//lib/stringext",
+        "@re//posix",
+        "@stringext//:stringext",
     ]
 )
 
@@ -38,21 +38,19 @@ ocaml_signature(
 ocaml_module(
     name   = "Uri_re",
     struct = "uri_re.ml",
-    sig    = "Uri_re.cmi",
+    sig    = ":Uri_re_cmi",
     deps   = [
-        "@opam//lib/re/posix",
-        "@opam//lib/stringext",
-        "@opam//lib/yojson",    # test: Error (warning 33): unused open Yojson.
+        "@re//posix",
+        "@stringext//:stringext",
     ],
-    opts   = ["-w", "-33"],     # disable warning 33
 )
 
 #############
 ocaml_signature(
-    name  = "Uri_re.cmi",
+    name  = "Uri_re_cmi",
     src   = "uri_re.mli",
     deps   = [
-        "@opam//lib/re/posix",
-        "@opam//lib/stringext",
+        "@re//posix",
+        "@stringext//:stringext",
     ]
 )
