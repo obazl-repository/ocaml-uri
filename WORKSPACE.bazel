@@ -18,6 +18,14 @@ rules_foreign_cc_dependencies(
     # register_built_tools=False
 )
 
+################
+git_repository(
+    name = "camlark",
+    remote = "https://github.com/obazl/ocamlark",
+    branch = "dev",
+)
+load("@camlark//:WORKSPACE.bzl", obazl_deps_bootstrap="cc_fetch_repos")
+obazl_deps_bootstrap()
 
 # #############
 # http_archive(
@@ -34,43 +42,66 @@ rules_foreign_cc_dependencies(
 # all_content = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
 
 # ######################################
-# ###############  OCaml ###############
+# ###############  OBazl ###############
+git_repository(
+    name = "rules_ocaml",
+    remote = "https://github.com/obazl/rules_ocaml",
+    branch = "obazl3",
+)
+
 git_repository(
     name = "obazl_tools_obazl",
     remote = "https://github.com/obazl/tools_obazl",
     branch = "dev",
 )
+load("@obazl_tools_obazl//:WORKSPACE.bzl", obazl_fetch_repos="cc_fetch_repos")
+obazl_fetch_repos()
 
 git_repository(
-    name = "obazl_tools_opam",
-    remote = "https://github.com/obazl/rules_opam",
-    branch = "nocamlfind",
+    name = "opam",  ## do not change name
+    remote = "https://github.com/obazl/tools_opam",
+    branch = "obazl2",
 )
+load("@opam//:WORKSPACE.bzl", "opam_fetch_repos")
+opam_fetch_repos()
 
-git_repository(
-    name = "obazl_rules_ocaml",
-    remote = "https://github.com/obazl/rules_ocaml",
-    branch = "nocamlfind",
-)
+load("@rules_foreign_cc//foreign_cc:repositories.bzl",
+     "rules_foreign_cc_dependencies")
+rules_foreign_cc_dependencies()
 
-load("@obazl_tools_opam//opam:bootstrap.bzl",
-     # opam_configure = "configure",
-     opam_install = "install")
-# load("//:WORKSPACE.bzl", "opam")
-# opam_configure(opam = opam)
+## uncomment after configuring coswitch; see README.md
+load("//:COSWITCH.bzl", register_coswitch = "register")
+register_coswitch()
 
-opam_install()
+load("@coswitch//:BOOTSTRAP.bzl", "bootstrap")
+bootstrap()
 
-load("@obazl_rules_ocaml//ocaml:bootstrap.bzl",
-     "ocaml_configure",
-     "ocaml_repository")
-     # "opam_configuration")
+################################################################
+################################################################
+# git_repository(
+#     name = "obazl_tools_opam",
+#     remote = "https://github.com/obazl/rules_opam",
+#     branch = "obazl2",
+# )
 
-# load("@obazl_rules_ocaml//ocaml:rules.bzl",
+# load("@obazl_tools_opam//opam:bootstrap.bzl",
+#      # opam_configure = "configure",
+#      opam_install = "install")
+# # load("//:WORKSPACE.bzl", "opam")
+# # opam_configure(opam = opam)
 
-ocaml_configure(
-    ##FIXME: version for coq
-)
+# opam_install()
+
+# load("@obazl_rules_ocaml//ocaml:bootstrap.bzl",
+#      "ocaml_configure",
+#      "ocaml_repository")
+#      # "opam_configuration")
+
+# # load("@obazl_rules_ocaml//ocaml:rules.bzl",
+
+# ocaml_configure(
+#     ##FIXME: version for coq
+# )
 
 # opam_configuration(
 #     name = "opam",
@@ -100,9 +131,6 @@ ocaml_configure(
 # #     sha256 = "d54742ffbdc6924f222d2179f0e10e911c5c659c4ae74158e9fe827aad862ac6",
 # #     strip_prefix = "rules_foreign_cc-0.2.0",
 # # )
-
-load("@obazl_tools_obazl//:WORKSPACE.bzl", obazl_fetch_repos="cc_fetch_repos")
-obazl_fetch_repos()
 
 # # must come after cc_fetch_repos
 # load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
