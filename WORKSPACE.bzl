@@ -5,37 +5,6 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")  # buildifier: di
 load("@obazl_rules_ocaml//ocaml:providers.bzl", "OpamConfig", "BuildConfig")
 
 ################################################################
-opam_pkgs = {
-    # pin versions:
-    # "base": ["v0.12.0"],
-    "ocaml-compiler-libs": ["v0.11.0"],
-    "compiler-libs.common": [],
-    "zarith": ["1.7"],  # WARNING: depends on libgmp-dev
-    ## for coqide_gui:
-    "lablgtk3-sourceview3": [],
-}
-
-# system deps required by lablgtk3-sourceview3:
-# expat, gtk+3, gtksourceview3, libxml2
-
-
-opam = OpamConfig(
-    version = "2.0",
-    builds  = {
-        "coq-8.13.1": BuildConfig(
-            switch   = "coq-8.13.1",
-            compiler = "4.11.1",
-            packages = opam_pkgs,
-        ),
-        "4.11.1": BuildConfig(
-            default  = True,
-            compiler = "4.11.1",
-            # switch   = "4.11.1", # default switch name matches key
-            packages = opam_pkgs
-        ),
-    }
-)
-
 #####################
 # def cc_fetch_rules():
 #     ## Bazel is migrating to this lib instead of builtin rules_cc.
