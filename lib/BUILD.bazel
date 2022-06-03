@@ -1,5 +1,3 @@
-
-
 load("@rules_ocaml//build:rules.bzl","ocaml_library",
     "ocaml_module",
     "ocaml_signature",
