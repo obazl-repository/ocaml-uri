@@ -1,0 +1,139 @@
+opam-version: "2.0"
+compiler: ["ocaml-base-compiler.4.14.0"]
+roots: [
+  "ocaml-base-compiler.4.14.0"
+  "ounit.2.2.6"
+  "uri.4.2.0"
+  "uri-re.4.2.0"
+  "uri-sexp.4.2.0"
+]
+installed: [
+  "angstrom.0.15.0"
+  "base.v0.15.0"
+  "base-bigarray.base"
+  "base-bytes.base"
+  "base-threads.base"
+  "base-unix.base"
+  "bigstringaf.0.9.0"
+  "conf-pkg-config.2"
+  "csexp.1.5.1"
+  "dune.3.2.0"
+  "dune-configurator.3.2.0"
+  "ocaml.4.14.0"
+  "ocaml-base-compiler.4.14.0"
+  "ocaml-compiler-libs.v0.12.4"
+  "ocaml-config.2"
+  "ocaml-options-vanilla.1"
+  "ocaml-syntax-shims.1.0.0"
+  "ocamlfind.1.9.3"
+  "ounit.2.2.6"
+  "ounit2.2.2.6"
+  "ppx_derivers.1.2.1"
+  "ppx_sexp_conv.v0.15.1"
+  "ppxlib.0.26.0"
+  "re.1.10.4"
+  "result.1.5"
+  "seq.base"
+  "sexplib0.v0.15.0"
+  "stdlib-shims.0.3.0"
+  "stringext.1.6.0"
+  "uri.4.2.0"
+  "uri-re.4.2.0"
+  "uri-sexp.4.2.0"
+]
+pinned: ["uri.4.2.0" "uri-re.4.2.0" "uri-sexp.4.2.0"]
+package "uri" {
+  opam-version: "2.0"
+  version: "4.2.0"
+  synopsis: "An RFC3986 URI/URL parsing library"
+  description: """\
+This is an OCaml implementation of the [RFC3986](http://tools.ietf.org/html/rfc3986) specification
+for parsing URI or URLs."""
+  maintainer: "anil@recoil.org"
+  authors: ["Anil Madhavapeddy" "David Sheets" "Rudi Grinberg"]
+  license: "ISC"
+  tags: ["url" "uri" "org:mirage" "org:xapi-project"]
+  homepage: "https://github.com/mirage/ocaml-uri"
+  doc: "https://mirage.github.io/ocaml-uri/"
+  bug-reports: "https://github.com/mirage/ocaml-uri/issues"
+  depends: [
+    "ocaml" {>= "4.04.0"}
+    "dune" {>= "1.2.0"}
+    "ounit" {with-test & >= "1.0.2"}
+    "ppx_sexp_conv" {with-test & >= "v0.9.0"}
+    "stringext" {>= "1.4.0"}
+    "angstrom" {>= "0.14.0"}
+  ]
+  build: [
+    ["dune" "subst"] {pinned}
+    ["dune" "build" "-p" name "-j" jobs]
+    ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+  ]
+  dev-repo: "git+https://github.com/mirage/ocaml-uri.git"
+  url {
+    src: "git+file:///Users/gar/obazl-repository/ocaml-uri#bazel"
+  }
+}
+package "uri-re" {
+  opam-version: "2.0"
+  version: "4.2.0"
+  synopsis: "An RFC3986 URI/URL parsing library"
+  description: """\
+This is an OCaml implementation of the [RFC3986](http://tools.ietf.org/html/rfc3986) specification
+for parsing URI or URLs."""
+  maintainer: "anil@recoil.org"
+  authors: ["Anil Madhavapeddy" "David Sheets" "Rudi Grinberg"]
+  license: "ISC"
+  tags: ["url" "uri" "org:mirage" "org:xapi-project"]
+  homepage: "https://github.com/mirage/ocaml-uri"
+  doc: "https://mirage.github.io/ocaml-uri/"
+  bug-reports: "https://github.com/mirage/ocaml-uri/issues"
+  depends: [
+    "ocaml" {>= "4.04.0"}
+    "dune" {>= "1.2.0"}
+    "ounit" {with-test & >= "1.0.2"}
+    "ppx_sexp_conv" {with-test & >= "v0.9.0"}
+    "re" {>= "1.9.0"}
+    "stringext" {>= "1.4.0"}
+  ]
+  build: [
+    ["dune" "subst"] {pinned}
+    ["dune" "build" "-p" name "-j" jobs]
+    ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+  ]
+  messages:
+    "Deprecated. This package is outdated, you should consider using uri instead"
+  dev-repo: "git+https://github.com/mirage/ocaml-uri.git"
+  url {
+    src: "git+file:///Users/gar/obazl-repository/ocaml-uri#bazel"
+  }
+}
+package "uri-sexp" {
+  opam-version: "2.0"
+  version: "4.2.0"
+  synopsis: "An RFC3986 URI/URL parsing library"
+  description: "ocaml-uri with sexp support"
+  maintainer: "anil@recoil.org"
+  authors: ["Anil Madhavapeddy" "David Sheets" "Rudi Grinberg"]
+  license: "ISC"
+  tags: ["url" "uri" "org:mirage" "org:xapi-project"]
+  homepage: "https://github.com/mirage/ocaml-uri"
+  doc: "https://mirage.github.io/ocaml-uri/"
+  bug-reports: "https://github.com/mirage/ocaml-uri/issues"
+  depends: [
+    "uri" {= version}
+    "dune" {>= "1.2.0"}
+    "ppx_sexp_conv" {>= "v0.13.0"}
+    "sexplib0"
+    "ounit" {with-test}
+  ]
+  build: [
+    ["dune" "subst"] {pinned}
+    ["dune" "build" "-p" name "-j" jobs]
+    ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+  ]
+  dev-repo: "git+https://github.com/mirage/ocaml-uri.git"
+  url {
+    src: "git+file:///Users/gar/obazl-repository/ocaml-uri#bazel"
+  }
+}
