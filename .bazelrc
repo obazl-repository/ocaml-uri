@@ -10,4 +10,4 @@ build:dbg --subcommands=pretty_print
 build:dbg --verbose_failures
 # build:dbg --sandbox_debug
 
-try-import user.bazelrc
+try-import .private/bazelrc
