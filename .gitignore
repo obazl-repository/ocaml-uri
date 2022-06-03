@@ -1,8 +1,10 @@
 user.bazelrc
 .moonlark.d
 .obazl.d
+.opam
 .sunlark.d
 .history.txt
+.ocamlark*
 
 *.install
 .*.swp
