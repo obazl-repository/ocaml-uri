@@ -8,6 +8,6 @@ build:bytecode --@ppx//mode=bytecode
 
 build:dbg --subcommands=pretty_print
 build:dbg --verbose_failures
-# build:dbg --sandbox_debug
+build:dbg --sandbox_debug
 
 try-import .private/bazelrc
