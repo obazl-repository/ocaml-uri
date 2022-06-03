@@ -36,7 +36,6 @@ ppx_executable(
     ppx_codeps = ["@ppx_sexp_conv//runtime-lib"],
     main = ":ppxlib_driver",
     deps = [
-        "@ppx_deriving//:ppx_deriving",
         "@ppx_sexp_conv//:ppx_sexp_conv",
     ],
 )
